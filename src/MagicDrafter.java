@@ -24,15 +24,17 @@ public class MagicDrafter {
 	public void start () {
 		Player player;
 		Set set;
+		List<Card> cards;
 		
 		set = new InnistradSet();
 		draft = new Draft();
 
 		try {
-			set.addCards(getCards());
+			cards = getCards();
+		    set.addCards(cards);
 			draft.addSet(set);
 			
-			player = new Player();
+			player = new DraftBot(cards);
 			player.name = "Player 1";
 			draft.addPlayer(player);
 			
@@ -155,21 +157,7 @@ public class MagicDrafter {
 					i++;
 				}
 				
-				i = 0;
-				
-				while (i == 0) {
-					try {
-						str = in.readLine();
-						
-						try {
-							i = new Integer(str).intValue();
-						} catch (NumberFormatException e) {
-						}
-					} catch (IOException e) {						
-					}
-				}
-				
-				draft.pick(player, pack, pack.get(i - 1));
+				draft.pick(player, pack, player.pick(pack));
 			}
 		}
 		
